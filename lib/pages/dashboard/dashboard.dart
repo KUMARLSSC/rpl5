@@ -6,7 +6,7 @@ import 'widget/calender_widget.dart';
 import 'widget/header_widget.dart';
 import 'widget/notification_card_widget.dart';
 import 'widget/profile_card_widget.dart';
-import 'widget/recruitment_data_widget.dart';
+import 'widget/recent_prograss_data_widget.dart';
 
 class Dashboard extends StatefulWidget {
   @override

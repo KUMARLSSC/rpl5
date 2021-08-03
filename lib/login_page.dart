@@ -16,7 +16,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: Provider.of<MenuController>(context, listen: false).scaffoldKey,
+      //key: Provider.of<MenuController>(context, listen: false).scaffoldKey,
       backgroundColor: Color(0xFFf5f5f5),
       body: ListView(
         padding: EdgeInsets.symmetric(

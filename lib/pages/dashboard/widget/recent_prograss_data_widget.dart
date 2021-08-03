@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:rpl5/candidate_page.dart';
 import 'package:rpl5/common/app_colors.dart';
 import 'package:rpl5/common/app_responsive.dart';
+import 'package:rpl5/main.dart';
 
 class RecruitmentDataWidget extends StatefulWidget {
   @override
@@ -121,7 +123,14 @@ class _RecruitmentDataWidgetState extends State<RecruitmentDataWidget> {
     );
   }
 
-  TableRow tableRow(context, {name, image, designation, status, color}) {
+  TableRow tableRow(
+    context, {
+    name,
+    image,
+    designation,
+    status,
+    color,
+  }) {
     return TableRow(
         decoration: BoxDecoration(
           border: Border(
@@ -133,42 +142,58 @@ class _RecruitmentDataWidgetState extends State<RecruitmentDataWidget> {
         ),
         children: [
           //Full Name
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 15),
-            child: Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(1000),
-                  child: Image.asset(
-                    image,
-                    width: 30,
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CandidatePage()),
+              );
+            },
+            child: Container(
+              margin: EdgeInsets.symmetric(vertical: 15),
+              child: Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(1000),
+                    child: Image.asset(
+                      image,
+                      width: 30,
+                    ),
                   ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(name)
-              ],
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(name)
+                ],
+              ),
             ),
           ),
           // Designation
           if (!AppResponsive.isMobile(context)) Text(designation),
           //Status
-          Row(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: color,
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CandidatePage()),
+              );
+            },
+            child: Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: color,
+                  ),
+                  height: 10,
+                  width: 10,
                 ),
-                height: 10,
-                width: 10,
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Text(status),
-            ],
+                SizedBox(
+                  width: 10,
+                ),
+                Text(status),
+              ],
+            ),
           ),
           // Menu icon
           Text('001')
