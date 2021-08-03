@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:rpl5/candidate_page.dart';
 import 'package:rpl5/common/app_colors.dart';
 import 'package:rpl5/common/app_responsive.dart';
 import 'package:rpl5/main.dart';
+
+import '../../../image_aadhar.dart';
 
 class RecruitmentDataWidget extends StatefulWidget {
   @override
@@ -12,114 +15,101 @@ class RecruitmentDataWidget extends StatefulWidget {
 class _RecruitmentDataWidgetState extends State<RecruitmentDataWidget> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          color: AppColor.white, borderRadius: BorderRadius.circular(20)),
-      padding: EdgeInsets.all(20),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Recent Progress",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: AppColor.black,
-                  fontSize: 22,
-                ),
-              ),
-              Container(
-                decoration: BoxDecoration(
-                    color: AppColor.yellow,
-                    borderRadius: BorderRadius.circular(100)),
-                padding: EdgeInsets.symmetric(
-                  vertical: 10,
-                  horizontal: 20,
-                ),
-                child: Text(
-                  "View All",
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, color: AppColor.black),
-                ),
-              )
-            ],
-          ),
-          Divider(
-            thickness: 0.5,
-            color: Colors.grey,
-          ),
-          Table(
-            defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-            children: [
-              /// Table Header
-              TableRow(
-                decoration: BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(
-                    color: Colors.grey,
-                    width: 0.5,
-                  )),
-                ),
-                children: [
-                  tableHeader("Candidate ID"),
-                  if (!AppResponsive.isMobile(context))
-                    tableHeader("Assessment Date"),
-                  tableHeader("Status"),
-                  if (!AppResponsive.isMobile(context)) tableHeader("Batch ID"),
-                ],
-              ),
-
-              /// Table Data
-              tableRow(
-                context,
-                name: "Candidate ID",
-                color: Colors.red,
-                image: "images/user1.jpg",
-                designation: "02-08-2021",
-                status: "Pending",
-              ),
-              tableRow(
-                context,
-                name: "Candidate ID",
-                color: Colors.green,
-                image: "images/user2.jpg",
-                designation: "02-08-2021",
-                status: "Completed",
-              ),
-              tableRow(
-                context,
-                name: "Candidate ID",
-                color: Colors.red,
-                image: "images/user3.jpg",
-                designation: "02-08-2021",
-                status: "Pending",
-              ),
-              tableRow(
-                context,
-                name: "Candidate ID",
-                color: Colors.green,
-                image: "images/user2.jpg",
-                designation: "02-08-2021",
-                status: "Completed",
-              ),
-            ],
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(vertical: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance.collection('RPL-5Image').snapshots(),
+      builder: (context, AsyncSnapshot snapshot) {
+        if (!snapshot.hasData) {
+          return Center(child: CircularProgressIndicator());
+        } else {
+          DocumentSnapshot documentSnapshot = snapshot.data.docs[1];
+          return Container(
+            decoration: BoxDecoration(
+                color: AppColor.white, borderRadius: BorderRadius.circular(20)),
+            padding: EdgeInsets.all(20),
+            child: Column(
               children: [
-                Text("Showing 4 out of 4 Results"),
-                Text(
-                  "View All",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Recent Progress",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: AppColor.black,
+                        fontSize: 22,
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: AppColor.yellow,
+                          borderRadius: BorderRadius.circular(100)),
+                      padding: EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 20,
+                      ),
+                      child: Text(
+                        "View All",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, color: AppColor.black),
+                      ),
+                    )
+                  ],
                 ),
+                Divider(
+                  thickness: 0.5,
+                  color: Colors.grey,
+                ),
+                Table(
+                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                  children: [
+                    /// Table Header
+                    TableRow(
+                      decoration: BoxDecoration(
+                        border: Border(
+                            bottom: BorderSide(
+                          color: Colors.grey,
+                          width: 0.5,
+                        )),
+                      ),
+                      children: [
+                        tableHeader("Candidate ID"),
+                        if (!AppResponsive.isMobile(context))
+                          tableHeader("Assessment Date"),
+                        tableHeader("Status"),
+                        if (!AppResponsive.isMobile(context))
+                          tableHeader("Batch ID"),
+                      ],
+                    ),
+
+                    /// Table Data
+                    tableRow(
+                      context,
+                      name: documentSnapshot['candidateID'],
+                      color: Colors.red,
+                      image: documentSnapshot['url'],
+                      designation: "02-08-2021",
+                      status: "Pending",
+                    ),
+                  ],
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("Showing 4 out of 4 Results"),
+                      Text(
+                        "View All",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
-          )
-        ],
-      ),
+          );
+        }
+      },
     );
   }
 
@@ -146,7 +136,7 @@ class _RecruitmentDataWidgetState extends State<RecruitmentDataWidget> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => CandidatePage()),
+                MaterialPageRoute(builder: (context) => ImageAadhar()),
               );
             },
             child: Container(
@@ -155,7 +145,7 @@ class _RecruitmentDataWidgetState extends State<RecruitmentDataWidget> {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(1000),
-                    child: Image.asset(
+                    child: Image.network(
                       image,
                       width: 30,
                     ),
@@ -175,7 +165,7 @@ class _RecruitmentDataWidgetState extends State<RecruitmentDataWidget> {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => CandidatePage()),
+                MaterialPageRoute(builder: (context) => ImageAadhar()),
               );
             },
             child: Row(

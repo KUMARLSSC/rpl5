@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_video_player/flutter_web_video_player.dart';
-
+import 'package:http/http.dart' as http;
+import 'api_data_model.dart';
 import 'common/app_colors.dart';
 
 class CandidatePage extends StatefulWidget {
@@ -14,10 +16,29 @@ class CandidatePage extends StatefulWidget {
 }
 
 class _CandidatePageState extends State<CandidatePage> {
+  var client = new http.Client();
   @override
   void initState() {
     super.initState();
     FirebaseFirestore.instance.collection('RPL-5PracticalVideo').snapshots();
+  }
+
+  Future<List<PracticalResult>?> updateTheory(
+      List<PracticalResult> list) async {
+    var body = json.encode(list);
+    final response = await client.post(
+        Uri.parse(
+            'https://webapplication320200218110357.azurewebsites.net/api/PracticalResult'),
+        body: body,
+        headers: {'Content-type': 'application/json; charset=UTF-8'});
+    print(response.headers);
+    if (response.statusCode == 201) {
+      final String responseString = response.body;
+
+      return practicalResultFromJson(responseString);
+    } else {
+      return null;
+    }
   }
 
   @override
@@ -28,6 +49,7 @@ class _CandidatePageState extends State<CandidatePage> {
         body: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection('RPL-5PracticalVideo')
+              .orderBy('UploadDate&Time', descending: false)
               .snapshots(),
           builder: (context, AsyncSnapshot snapshot) {
             if (!snapshot.hasData) {
@@ -78,13 +100,26 @@ class _CandidatePageState extends State<CandidatePage> {
                               ),
                             ),
                           ),
-                          Text(
-                            documentSnapshot['Question'],
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: AppColor.black,
-                              fontSize: 22,
-                            ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                '${documentSnapshot['slno'].toString()} : ',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColor.black,
+                                  fontSize: 22,
+                                ),
+                              ),
+                              Text(
+                                documentSnapshot['Question'],
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColor.black,
+                                  fontSize: 22,
+                                ),
+                              ),
+                            ],
                           ),
                           // If the image is not null load the imageURL
                           documentSnapshot['url'] != null
@@ -96,7 +131,7 @@ class _CandidatePageState extends State<CandidatePage> {
                               // If the image is null show nothing
                               : Container(),
                           Text(
-                            'Max Marks : 10',
+                            'Max Marks : ${documentSnapshot['MAXMarks']}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: AppColor.black,
@@ -110,17 +145,15 @@ class _CandidatePageState extends State<CandidatePage> {
                               decoration: InputDecoration(
                                 hintText: 'Enter Marks here',
                                 filled: true,
-                                fillColor: Colors.blueGrey[100],
+                                fillColor: Colors.white,
                                 labelStyle: TextStyle(fontSize: 12),
                                 contentPadding: EdgeInsets.only(left: 30),
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: (Colors.blueGrey[50])!),
+                                  borderSide: BorderSide(color: Colors.black),
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: (Colors.blueGrey[50])!),
+                                  borderSide: BorderSide(color: Colors.blue),
                                   borderRadius: BorderRadius.circular(15),
                                 ),
                               ),

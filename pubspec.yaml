@@ -38,6 +38,7 @@ dependencies:
   provider: ^4.3.2+1
   stacked_services: ^0.8.6
   provider_architecture: ^1.1.1+1
+  http: ^0.13.3
   google_fonts: ^2.0.0
   table_calendar: ^3.0.1
 dev_dependencies:
