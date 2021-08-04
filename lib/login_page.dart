@@ -168,16 +168,16 @@ class Body extends StatelessWidget {
                   ),
                 ],
               ),
-              Image.asset(
-                'images/illustration-2.png',
+              Image.network(
+                'https://firebasestorage.googleapis.com/v0/b/scaleindia.appspot.com/o/illustration-2.png?alt=media&token=96b763ab-45c1-44a0-9726-124271bc2732',
                 width: 300,
               ),
             ],
           ),
         ),
 
-        Image.asset(
-          'images/Certificate-Man.png',
+        Image.network(
+          'https://firebasestorage.googleapis.com/v0/b/scaleindia.appspot.com/o/Certificate-Man.png?alt=media&token=6b8d1be9-5c8d-4605-9617-461345349bb7',
           width: 300,
         ),
         // MediaQuery.of(context).size.width >= 1300 //Responsive
@@ -294,8 +294,12 @@ class Body extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _loginWithButton(image: 'images/google.png'),
-            _loginWithButton(image: 'images/facebook.png'),
+            _loginWithButton(
+                image:
+                    'https://firebasestorage.googleapis.com/v0/b/scaleindia.appspot.com/o/google.png?alt=media&token=e2ff8de7-e189-4129-8c73-19dcd04aedea'),
+            _loginWithButton(
+                image:
+                    'https://firebasestorage.googleapis.com/v0/b/scaleindia.appspot.com/o/facebook.png?alt=media&token=ca1154c5-7707-49c1-9e65-c1618f56c8d2'),
           ],
         ),
       ],
@@ -337,7 +341,7 @@ class Body extends StatelessWidget {
                 ],
               )
             : BoxDecoration(),
-        child: Image.asset(
+        child: Image.network(
           '$image',
           width: 35,
         ),

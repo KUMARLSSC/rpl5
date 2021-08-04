@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'RPL5 Practical Video',
-      home: HomePage(),
+      home: LoginPage(),
     );
   }
 }

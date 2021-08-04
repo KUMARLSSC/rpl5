@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_video_player/flutter_web_video_player.dart';
 import 'package:http/http.dart' as http;
+import 'package:rpl5/login_page.dart';
 import 'api_data_model.dart';
 import 'common/app_colors.dart';
 
@@ -17,6 +19,9 @@ class CandidatePage extends StatefulWidget {
 
 class _CandidatePageState extends State<CandidatePage> {
   var client = new http.Client();
+  List datas = [];
+  bool _isloading = false;
+  double? _progress;
   @override
   void initState() {
     super.initState();
@@ -60,6 +65,10 @@ class _CandidatePageState extends State<CandidatePage> {
                   itemBuilder: (context, index) {
                     DocumentSnapshot documentSnapshot =
                         snapshot.data.docs[index];
+                    datas = snapshot.data.docs;
+                    List<TextEditingController> markTextEditController =
+                        List.generate(
+                            datas.length, (i) => TextEditingController());
                     return Container(
                       height: 500,
                       margin: const EdgeInsets.only(top: 20),
@@ -138,27 +147,90 @@ class _CandidatePageState extends State<CandidatePage> {
                               fontSize: 22,
                             ),
                           ),
-                          Container(
-                            width: 200,
-                            child: TextField(
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                hintText: 'Enter Marks here',
-                                filled: true,
-                                fillColor: Colors.white,
-                                labelStyle: TextStyle(fontSize: 12),
-                                contentPadding: EdgeInsets.only(left: 30),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black),
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.blue),
-                                  borderRadius: BorderRadius.circular(15),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 200,
+                                child: TextField(
+                                  controller: markTextEditController[index],
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                    hintText: 'Enter Marks here',
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    labelStyle: TextStyle(fontSize: 12),
+                                    contentPadding: EdgeInsets.only(left: 30),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.black),
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.blue),
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              ElevatedButton(
+                                child: Container(
+                                    width: 100,
+                                    height: 50,
+                                    child: Center(child: Text("Submit"))),
+                                onPressed: () {
+                                  try {
+                                    FirebaseFirestore.instance
+                                        .collection('RPL-5PracticalMark')
+                                        .doc()
+                                        .set({
+                                      'candidateID': 123,
+                                      'candidateName': 'Abc',
+                                      'Nos': documentSnapshot['Nos'],
+                                      'slno': documentSnapshot['slno'],
+                                      'commonQuestion':
+                                          documentSnapshot['commonQuestion'],
+                                      'Question': documentSnapshot['Question'],
+                                      'MAXMarks': documentSnapshot['MAXMarks'],
+                                      'GivenMarks':
+                                          markTextEditController[index].text,
+                                      'UploadDate&Time':
+                                          FieldValue.serverTimestamp()
+                                    }).whenComplete(() => showDialog(
+                                            barrierDismissible: true,
+                                            context: context,
+                                            builder: (BuildContext context) =>
+                                                AlertDialog(
+                                                  title: Text("Success"),
+                                                  actions: <Widget>[
+                                                    // ignore: deprecated_member_use
+                                                    FlatButton(
+                                                      child: Text('Ok'),
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                    )
+                                                  ],
+                                                )));
+                                  } catch (e) {
+                                    print(e);
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.greenAccent[700],
+                                  onPrimary: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
                         ],
                       ),
                       decoration: BoxDecoration(

@@ -16,8 +16,8 @@ class ProfileCardWidget extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(1000),
-                child: Image.asset(
-                  "images/user1.jpg",
+                child: Image.network(
+                  "https://firebasestorage.googleapis.com/v0/b/scaleindia.appspot.com/o/user1.jpg?alt=media&token=b2f85281-19bd-4955-b0ac-65ad344b7d43",
                   height: 60,
                   width: 60,
                 ),

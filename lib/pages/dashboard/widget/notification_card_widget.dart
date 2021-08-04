@@ -54,8 +54,8 @@ class NotificationCardWidget extends StatelessWidget {
           ),
           if (MediaQuery.of(context).size.width >= 620) ...{
             Spacer(),
-            Image.asset(
-              "images/notification_image.png",
+            Image.network(
+              "https://firebasestorage.googleapis.com/v0/b/scaleindia.appspot.com/o/notification_image.png?alt=media&token=92bfd429-8312-486a-8934-95c4b1d83209",
               height: 160,
             )
           }
