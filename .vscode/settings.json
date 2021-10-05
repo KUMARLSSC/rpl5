@@ -1,6 +1,6 @@
 {
     "dart.flutterRunAdditionalArgs": [
         "--no-sound-null-safety",
-        "-d edge --no-sound-null-safety --web-renderer html "
+        "--web-renderer html"
     ]
 }

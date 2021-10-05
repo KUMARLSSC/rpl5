@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:rpl5/ApiModel/route_names.dart';
+import 'package:rpl5/pages/home_page.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
+    case HomePageViewRoute:
+      return _pageRoute(
+        routeName: settings.name,
+        viewToShow: HomePage(),
+      );
     default:
       return MaterialPageRoute(
           builder: (_) => Scaffold(

@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "scaleindia"
+  },
+  "targets": {
+    "scaleindia": {
+      "hosting": {
+        "tr": [
+          "assessor-rpl5-scaleindia"
+        ]
+      }
+    }
   }
 }

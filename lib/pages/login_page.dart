@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:rpl5/main.dart';
 import 'package:rpl5/pages/home_page.dart';
 
-import 'controllers/menu_controller.dart';
+import '../controllers/menu_controller.dart';
 
 final TextEditingController emailTextEditController =
     new TextEditingController();
@@ -357,11 +358,17 @@ class Body extends StatelessWidget {
         MaterialPageRoute(builder: (context) => HomePage()),
       );
     } else {
-      print("Something went wrong");
+      EasyLoading.show(status: 'Failed...').whenComplete(() => [
+            EasyLoading.showError('wrong credintial'),
+            EasyLoading.dismiss(),
+          ]);
     }
     if (emailTextEditController.text.isEmpty &&
         passwordTextEditController.text.isEmpty) {
-      print("Please fill all the fields");
+      EasyLoading.show(status: 'Failed...').whenComplete(() => [
+            EasyLoading.showError('Empty Field'),
+            EasyLoading.dismiss(),
+          ]);
     }
   }
 }

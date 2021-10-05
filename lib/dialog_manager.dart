@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:rpl5/dialog_model.dart';
+import 'package:rpl5/ApiModel/dialog_model.dart';
+import 'package:rpl5/services/dialog_service.dart';
 
-import '../locator.dart';
-import 'dialog_service.dart';
+import '../../locator.dart';
 
 class DialogManager extends StatefulWidget {
   final Widget child;

@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 
-import 'dialog_model.dart';
+import '../ApiModel/dialog_model.dart';
 
 class DialogService {
   GlobalKey<NavigatorState> _dialogNavigationKey = GlobalKey<NavigatorState>();
@@ -49,6 +49,7 @@ class DialogService {
   void dialogComplete(DialogResponse response) {
     _dialogNavigationKey.currentState!.pop();
     _dialogCompleter.complete(response);
+    // ignore: unnecessary_statements
     _dialogCompleter;
   }
 }
